@@ -14,16 +14,27 @@ A project-management landing page template for [Pimolu UI](https://pimolu.com). 
 
 The Pimolu packages are a public beta. Their published React peer range supports React 18 and 19. The project consumes the npm packages directly; it does not require a clone or build of the Pimolu monorepo. See the [official repository](https://github.com/pimoludev/ui), [documentation](https://www.pimolu.com/docs), and [components](https://www.pimolu.com/components).
 
-## Getting started
+## Get started
 
-Use Node.js 20.9 or later (Node 22 LTS recommended) and npm:
+### Create your copy
+
+On GitHub, select **Use this template** and create a repository in your account. The template owner must enable **Template repository** in the source repository settings for this button to appear. Then clone your new repository:
+
+```sh
+git clone https://github.com/YOUR-USERNAME/saas-landing.git
+cd saas-landing
+```
+
+### Install and run locally
+
+Use Node.js 20.9 or later (Node 22 LTS recommended) and npm. Install the locked dependencies, then start the development server:
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Other checks:
+Open [http://localhost:3000](http://localhost:3000). To check or build the project, run:
 
 ```sh
 npm run typecheck
@@ -31,7 +42,6 @@ npm run lint
 npm run build
 npm run start
 ```
-
 ## Make it yours
 
 Edit `lib/content.ts` for the product name, description, navigation, repository link, example plans, and FAQ. Demo project and team data and the remaining section copy live in `components/landing.tsx`. Styles and responsive breakpoints are in `app/globals.css`; metadata is in `app/layout.tsx`. Replace the original icon in `app/icon.svg`. The copy is in English and deliberately has no i18n runtime: move the content into locale dictionaries when adding translations.
@@ -68,5 +78,3 @@ The mobile menu, theme switch, product tabs, pricing toggle, FAQ, and internal n
 ## License
 
 MIT. See [LICENSE](LICENSE).
-
-
