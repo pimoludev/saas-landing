@@ -7,11 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write \"app/**/*.{ts,tsx,css}\" \"components/**/*.{ts,tsx,css}\" \"lib/**/*.{ts,tsx}\"",
+    "format:check": "prettier --check \"app/**/*.{ts,tsx,css}\" \"components/**/*.{ts,tsx,css}\" \"lib/**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "@pimolu/react": "0.1.0-beta.2",
-    "@pimolu/web-styles": "0.1.0-beta.2",
+    "@pimolu/react": "^0.1.0-beta.3.1",
+    "@pimolu/web-styles": "^0.1.0-beta.3.1",
     "lucide-react": "^1.62.0",
     "next": "16.4.3",
     "react": "19.3.0",
@@ -24,6 +26,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
+    "prettier": "^3.9.10",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

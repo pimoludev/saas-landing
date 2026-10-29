@@ -1,36 +1,942 @@
 "use client";
 import { useState } from "react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Avatar, AvatarGroup, Badge, Button, Card, Progress, Tabs, TabsContent, TabsList, TabsTrigger } from "@pimolu/react";
-import { ArrowDownRight, ArrowRight, BarChart3, Check, CheckCircle2, ChevronDown, Circle, Clock3, Columns3, Flag, FolderKanban, LayoutDashboard, ListTodo, Menu, Moon, MoreHorizontal, Plus, Sparkles, Sun, Users, Workflow, X, Zap } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Avatar,
+  AvatarGroup,
+  Badge,
+  Button,
+  Card,
+  Progress,
+  SegmentedControl,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@pimolu/react";
+import {
+  ArrowDownRight,
+  ArrowRight,
+  BarChart3,
+  Check,
+  CheckCircle2,
+  ChevronDown,
+  Circle,
+  Clock3,
+  Columns3,
+  Flag,
+  FolderKanban,
+  LayoutDashboard,
+  ListTodo,
+  Menu,
+  Moon,
+  MoreHorizontal,
+  Plus,
+  Sparkles,
+  Sun,
+  Users,
+  Workflow,
+  X,
+  Zap,
+} from "lucide-react";
 import { faqs, navigation, plans, site } from "@/lib/content";
 import { useTheme } from "@/components/theme-provider";
 
-function buttonClasses(variant: string, appearance: string, size: string) { return `pimolu-button pimolu-button--${variant} pimolu-button--${appearance} pimolu-button--${size}`; }
-const people = ["Alex Morgan", "Sam Rivera", "Jamie Chen"];
-function Avatars() { return <AvatarGroup size="xs">{people.map(name => <Avatar name={name} key={name} />)}</AvatarGroup>; }
-function Brand() { return <a className="brand" href="#top" aria-label="Project Workspace home"><span className="brand-mark"><span/><span/><span/><span/></span><span>{site.name}</span></a>; }
-function Action({ href, children, secondary = false }: { href: string; children: React.ReactNode; secondary?: boolean }) { return <a href={href} target={/^https?:\/\//i.test(href) ? "_blank" : undefined} rel={/^https?:\/\//i.test(href) ? "noopener noreferrer" : undefined} className={`${buttonClasses(secondary ? "neutral" : "primary", secondary ? "outline" : "solid", "lg")} action-link`}>{children}</a>; }
-function Header() {
- const [open, setOpen] = useState(false); const { theme, toggle } = useTheme();
- return <header className="site-header"><div className="nav-shell"><Brand/><nav className="desktop-nav" aria-label="Main navigation">{navigation.map(item => <a key={item.href} href={item.href}>{item.label}</a>)}</nav><div className="nav-actions"><Button iconOnly appearance="ghost" variant="neutral" aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`} onClick={toggle} startIcon={theme === "light" ? <Moon size={18}/> : <Sun size={18}/>} /><a className={`${buttonClasses("primary", "solid", "sm")} nav-cta`} href="#pricing">Get Started <ArrowRight size={15}/></a><Button className="mobile-toggle" iconOnly appearance="ghost" variant="neutral" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen(!open)} startIcon={open ? <X size={20}/> : <Menu size={20}/>} /></div></div>{open && <nav id="mobile-menu" className="mobile-menu" aria-label="Mobile navigation">{navigation.map(item => <a key={item.href} href={item.href} onClick={() => setOpen(false)}>{item.label}<ArrowRight size={16}/></a>)}<a href="#pricing" onClick={() => setOpen(false)}>Get Started <ArrowRight size={16}/></a></nav>}</header>;
+function buttonClasses(variant: string, appearance: string, size: string) {
+  return `pimolu-button pimolu-button--${variant} pimolu-button--${appearance} pimolu-button--${size}`;
 }
-const tasks = [ ["Finalize homepage design", "In progress", "High", "May 24"], ["Review onboarding flow", "In review", "Medium", "May 26"], ["Prepare launch assets", "To do", "High", "May 28"], ["Update product roadmap", "Done", "Low", "May 30"] ];
-function TaskList() { return <div className="task-list">{tasks.map(([name,status,priority,date], i) => <div className="task-row" key={name}><span className="task-name">{i === 3 ? <CheckCircle2 size={17} className="green"/> : <Circle size={17}/>}<span>{name}</span></span><Badge size="sm" appearance="soft" variant={i === 3 ? "success" : i === 1 ? "warning" : "neutral"}>{status}</Badge><span className="task-priority"><Flag size={13}/>{priority}</span><span className="task-date">{date}</span><Avatar name={people[i % 3]} size="xs"/></div>)}</div>; }
-function Workspace() { return <div className="workspace"><aside className="workspace-side"><div className="workspace-label"><span className="tiny-mark">W</span><span>Workspace<small>Team workspace</small></span><ChevronDown size={14}/></div><div className="side-caption">WORKSPACE</div><div className="side-item active"><LayoutDashboard size={15}/> Overview</div><div className="side-item"><ListTodo size={15}/> My tasks</div><div className="side-item"><FolderKanban size={15}/> Projects</div><div className="side-item"><Users size={15}/> Team</div><div className="side-caption side-projects">PROJECTS <Plus size={13}/></div><div className="side-item"><i className="dot sage"/> Product launch</div><div className="side-item"><i className="dot amber"/> Website refresh</div><div className="side-item"><i className="dot blue"/> Q3 roadmap</div><div className="side-bottom"><Avatar name="Alex Morgan" size="xs"/> Alex Morgan <MoreHorizontal size={16}/></div></aside><div className="workspace-main"><div className="workspace-top"><span>Workspace <span className="slash">/</span> Overview</span><span><span className="online-dot"/> All systems in flow</span></div><div className="workspace-body"><div className="preview-heading"><div><div className="eyebrow tiny">MONDAY, MAY 20</div><h3>Good morning, Alex <span>✳</span></h3><p>Here’s what’s happening across your projects.</p></div><span className="preview-add"><Plus size={14}/> New project</span></div><div className="stat-grid"><div><span>Active projects <FolderKanban size={15}/></span><strong>12</strong><small><b>+2</b> from last month</small></div><div><span>Tasks completed <CheckCircle2 size={15}/></span><strong>84<span>%</span></strong><small><b>+12%</b> from last month</small></div><div><span>Upcoming deadlines <Clock3 size={15}/></span><strong>05</strong><small>Across 3 projects</small></div></div><div className="preview-section"><div className="preview-section-title"><div><h4>Priority tasks</h4><p>A little progress every day.</p></div><MoreHorizontal size={18}/></div><TaskList/></div><div className="preview-project"><div><span className="project-icon"><FolderKanban size={16}/></span><div><strong>Product launch</strong><small>12 of 18 tasks completed</small></div></div><div className="project-progress"><span>67%</span><Progress value={67} size="sm" aria-label="Product launch progress"/></div><Avatars/></div></div></div></div>; }
-function SectionHeading({ tag, title, text }: { tag: string; title: string; text: string }) { return <div className="section-heading"><div className="eyebrow"><span className="eyebrow-dot"/> {tag}</div><h2>{title}</h2><p>{text}</p></div>; }
-function ProductViews() { return <Tabs defaultValue="overview" className="views-tabs"><TabsList aria-label="Product views" className="views-list">{["Overview", "Tasks", "Projects", "Team"].map(x => <TabsTrigger key={x} value={x.toLowerCase()}>{x}</TabsTrigger>)}</TabsList><TabsContent value="overview"><div className="view-panel"><div><span className="view-icon"><BarChart3/></span><h3>A clear picture, at a glance.</h3><p>See priorities, progress, and the work that needs your attention in one calm view.</p><div className="mini-stats"><div><strong>12</strong><span>active projects</span></div><div><strong>84%</strong><span>tasks completed</span></div></div></div><div className="view-chart"><div className="chart-head"><strong>Team activity</strong><span>This week <ChevronDown size={13}/></span></div><div className="bars">{[35,56,44,72,58,88,70].map((n,i)=><div key={i}><span style={{height:`${n}%`}}/><small>{["M","T","W","T","F","S","S"][i]}</small></div>)}</div></div></div></TabsContent><TabsContent value="tasks"><div className="view-panel"><div><span className="view-icon"><ListTodo/></span><h3>Make the next step obvious.</h3><p>Give every task an owner, a priority, and a place in the bigger picture.</p></div><div className="view-task-box"><h4>My tasks <Badge size="sm" appearance="soft">4 tasks</Badge></h4><TaskList/></div></div></TabsContent><TabsContent value="projects"><div className="view-panel"><div><span className="view-icon"><FolderKanban/></span><h3>Keep the big picture in view.</h3><p>Organize the details without losing sight of the outcomes your team is working toward.</p></div><div className="project-cards">{[["Product launch",67],["Website refresh",42],["Q3 roadmap",82]].map(([name,value])=><div key={name}><div><FolderKanban size={17}/><strong>{name}</strong><MoreHorizontal size={17}/></div><small>Project progress <b>{value}%</b></small><Progress value={Number(value)} size="sm" aria-label={`${name} progress`}/></div>)}</div></div></TabsContent><TabsContent value="team"><div className="view-panel"><div><span className="view-icon"><Users/></span><h3>Good work happens together.</h3><p>Bring people and projects together so everyone knows where work stands.</p></div><div className="team-list"><h4>Project team <Badge size="sm" appearance="soft">3 members</Badge></h4>{people.map((name,i)=><div key={name}><Avatar name={name} size="sm"/><span><strong>{name}</strong><small>{["Project lead", "Product designer", "Developer"][i]}</small></span><Badge size="sm" variant="success" appearance="soft">Active</Badge></div>)}</div></div></TabsContent></Tabs>; }
-const features = [
- {icon: FolderKanban, title:"Project planning", text:"Bring goals, milestones, and the details together in one organized space."},
- {icon: ListTodo, title:"Task management", text:"Give every task a clear owner, priority, and due date."},
- {icon: Users, title:"Team collaboration", text:"Keep conversations close to the work and everyone in the loop."},
- {icon: BarChart3, title:"Progress tracking", text:"See what’s moving, what’s done, and where your team needs a hand."},
- {icon: Workflow, title:"Workflow automation", text:"Make room for meaningful work by simplifying repetitive steps."},
- {icon: Sparkles, title:"Reports & insights", text:"Turn everyday activity into a clearer view of your team’s progress."},
+const people = ["Alex Morgan", "Sam Rivera", "Jamie Chen"];
+function Avatars() {
+  return (
+    <AvatarGroup size="xs">
+      {people.map((name) => (
+        <Avatar name={name} key={name} />
+      ))}
+    </AvatarGroup>
+  );
+}
+function Brand() {
+  return (
+    <a className="brand" href="#top" aria-label="Project Workspace home">
+      <span className="brand-mark">
+        <span />
+        <span />
+        <span />
+        <span />
+      </span>
+      <span>{site.name}</span>
+    </a>
+  );
+}
+function Action({
+  href,
+  children,
+  secondary = false,
+}: {
+  href: string;
+  children: React.ReactNode;
+  secondary?: boolean;
+}) {
+  return (
+    <a
+      href={href}
+      target={/^https?:\/\//i.test(href) ? "_blank" : undefined}
+      rel={/^https?:\/\//i.test(href) ? "noopener noreferrer" : undefined}
+      className={`${buttonClasses(secondary ? "neutral" : "primary", secondary ? "outline" : "solid", "lg")} action-link`}
+    >
+      {children}
+    </a>
+  );
+}
+function Header() {
+  const [open, setOpen] = useState(false);
+  const { theme, toggle } = useTheme();
+  return (
+    <header className="site-header">
+      <div className="nav-shell">
+        <Brand />
+        <nav className="desktop-nav" aria-label="Main navigation">
+          {navigation.map((item) => (
+            <a key={item.href} href={item.href}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
+        <div className="nav-actions">
+          <Button
+            iconOnly
+            appearance="ghost"
+            variant="neutral"
+            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+            onClick={toggle}
+            startIcon={
+              theme === "light" ? <Moon size={18} /> : <Sun size={18} />
+            }
+          />
+          <a
+            className={`${buttonClasses("primary", "solid", "sm")} nav-cta`}
+            href="#pricing"
+          >
+            Get Started <ArrowRight size={15} />
+          </a>
+          <Button
+            className="mobile-toggle"
+            iconOnly
+            appearance="ghost"
+            variant="neutral"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpen(!open)}
+            startIcon={open ? <X size={20} /> : <Menu size={20} />}
+          />
+        </div>
+      </div>
+      {open && (
+        <nav
+          id="mobile-menu"
+          className="mobile-menu"
+          aria-label="Mobile navigation"
+        >
+          {navigation.map((item) => (
+            <a key={item.href} href={item.href} onClick={() => setOpen(false)}>
+              {item.label}
+              <ArrowRight size={16} />
+            </a>
+          ))}
+          <a href="#pricing" onClick={() => setOpen(false)}>
+            Get Started <ArrowRight size={16} />
+          </a>
+        </nav>
+      )}
+    </header>
+  );
+}
+const tasks = [
+  ["Finalize homepage design", "In progress", "High", "May 24"],
+  ["Review onboarding flow", "In review", "Medium", "May 26"],
+  ["Prepare launch assets", "To do", "High", "May 28"],
+  ["Update product roadmap", "Done", "Low", "May 30"],
 ];
-function Features() { return <section id="features" className="section container"><div className="section-split"><SectionHeading tag="THE FEATURES" title="Everything in its right place." text="Less chasing updates. More momentum. Bring the important pieces of work together, without the noise."/><p className="side-note">A more thoughtful way to move from the first idea to the final checkmark. <ArrowDownRight size={20}/></p></div><div className="feature-grid">{features.map((f,i)=><Card key={f.title} className={`feature-card feature-${i}`}><div className="feature-icon"><f.icon size={20}/></div><h3>{f.title}</h3><p>{f.text}</p>{i === 0 && <div className="feature-visual"><div><span className="dot sage"/> Product launch <Badge size="sm" variant="success" appearance="soft">On track</Badge></div><Progress value={72} size="sm" aria-label="Product launch progress"/><small>13 of 18 tasks complete <b>72%</b></small></div>}{i === 3 && <div className="feature-visual compact"><span>Weekly progress</span><strong>+24% <span>↗</span></strong><div className="sparkline"><i/><i/><i/><i/><i/><i/><i/></div></div>}</Card>)}</div></section>; }
-function Pricing() { const [yearly,setYearly]=useState(true); return <section id="pricing" className="section container"><div className="pricing-head"><SectionHeading tag="PRICING" title="Room to grow, at your pace." text="Simple example plans for individuals and teams. Find the shape that fits your work."/><div className="billing" aria-label="Billing period"><Button size="sm" variant="neutral" appearance={!yearly ? "solid" : "ghost"} aria-pressed={!yearly} onClick={()=>setYearly(false)}>Monthly</Button><Button size="sm" variant="neutral" appearance={yearly ? "solid" : "ghost"} aria-pressed={yearly} onClick={()=>setYearly(true)}>Yearly <span>Save up to 25%</span></Button></div></div><p className="demo-note">Illustrative pricing only. This is a demo; no plans are available for purchase.</p><div className="pricing-grid">{plans.map(plan=><Card className={`price-card ${plan.name === "Pro" ? "featured-price" : ""}`} key={plan.name}><div className="plan-title"><h3>{plan.name}</h3>{plan.name === "Pro" && <Badge variant="success" appearance="soft">Most popular</Badge>}</div><p>{plan.description}</p><div className="price"><strong>${yearly ? plan.yearly : plan.monthly}</strong><span> / user / month</span></div><small>{plan.monthly === 0 ? "Free forever" : yearly ? `Billed yearly ($${plan.yearly * 12} per user)` : "Billed monthly"}</small><a className={`${buttonClasses(plan.name === "Pro" ? "primary" : "neutral", plan.name === "Pro" ? "solid" : "outline", "md")} plan-link`} href="#faq">Explore the demo <ArrowRight size={16}/></a><div className="plan-divider"/><strong className="included">WHAT’S INCLUDED</strong><ul>{plan.features.map(feature=><li key={feature}><Check size={16}/>{feature}</li>)}</ul></Card>)}</div></section>; }
-export function Landing() { return <><Header/><main id="top"><section className="hero container"><div className="hero-copy"><div className="hero-badge"><span className="online-dot"/> A calmer way to get work done <ArrowRight size={14}/></div><h1>Keep projects moving.<br/><em>Keep teams aligned.</em></h1><p>{site.description}</p><div className="hero-actions"><Action href="#features">Explore Features <ArrowRight size={17}/></Action><Action href="#how-it-works" secondary>See How It Works</Action></div><div className="hero-foot"><Avatars/><span>Made for the way teams work together</span><span className="foot-line"/><span>Built with care <span className="green">✳</span></span></div></div><div className="hero-preview"><div className="preview-topline"><div><i/><i/><i/></div><span>PROJECT WORKSPACE / OVERVIEW</span><span>✳</span></div><Workspace/></div><div className="hero-caption"><span>01 / A LITTLE MORE CLARITY</span><span>YOUR WORK, IN ONE PLACE <ArrowDownRight size={15}/></span></div></section><div className="principles"><div className="container"><span>GOOD WORK STARTS WITH CLARITY</span><div><CheckCircle2/> Less busywork</div><div><Columns3/> More visibility</div><div><Users/> Better together</div><div><Zap/> Steady momentum</div></div></div><section className="section container product-section"><div className="section-split"><SectionHeading tag="A BETTER VIEW OF WORK" title="One workspace. Every perspective." text="From the big picture to the smallest detail, find the view that helps your team move forward."/><a className="text-link" href="#features">Explore all features <ArrowRight size={16}/></a></div><ProductViews/></section><Features/><section id="how-it-works" className="section how-section"><div className="container"><div className="section-split"><SectionHeading tag="HOW IT WORKS" title="From plans to progress, naturally." text="A simple starting point for the work that matters. Set things up once, then get moving together."/><span className="section-number">01 / 03</span></div><div className="steps">{[["01","Create your workspace","Start with a shared space for your team, your goals, and the work ahead."],["02","Organize your projects","Break the big picture into projects, tasks, priorities, and achievable steps."],["03","Make progress together","Give work an owner, follow along, and celebrate the milestones as a team."]].map(([n,title,text])=><div className="step" key={n}><span>{n}</span><div className="step-line"/><h3>{title}</h3><p>{text}</p></div>)}</div></div></section><section className="section container workflow-section"><div className="workflow-copy"><SectionHeading tag="MADE FOR MOMENTUM" title="A little structure goes a long way." text="Take a launch from an idea to a shared plan. Assign the work, set priorities, and see progress unfold without another status meeting."/><a className="text-link" href="#pricing">Find your starting point <ArrowRight size={16}/></a></div><div className="workflow-card"><div className="workflow-top"><span><span className="project-icon"><FolderKanban size={18}/></span><span><strong>Product launch</strong><small>Project workflow</small></span></span><Badge appearance="soft" variant="success" dot>On track</Badge></div><div className="workflow-line"><span className="workflow-check"><Check size={15}/></span><div><strong>Project created</strong><small>Alex created the launch workspace</small></div><span>9:12 AM</span></div><div className="workflow-line"><span className="workflow-check"><Users size={15}/></span><div><strong>Team assigned</strong><small>Three teammates are ready to go</small></div><Avatars/></div><div className="workflow-line"><span className="workflow-check"><Flag size={15}/></span><div><strong>Priorities set</strong><small>Next up: finalize homepage design</small></div><Badge size="sm" appearance="soft" variant="warning">High</Badge></div><div className="workflow-progress"><div><strong>Launch progress</strong><span>67%</span></div><Progress value={67} aria-label="Launch progress" size="sm"/></div></div></section><Pricing/><section id="faq" className="section faq-section"><div className="container faq-layout"><SectionHeading tag="GOOD TO KNOW" title="Questions, answered." text="A few things you might want to know about the Project Workspace concept."/><Accordion type="single" collapsible className="faq-list">{faqs.map(([q,a],i)=><AccordionItem value={`faq-${i}`} key={q}><AccordionTrigger>{q}</AccordionTrigger><AccordionContent>{a}</AccordionContent></AccordionItem>)}</Accordion></div></section><section className="container final-section"><div className="final-cta"><div><div className="eyebrow">A BETTER WAY TO WORK</div><h2>Bring clarity to<br/>every project.</h2><p>Make space for good work, together. Explore the template and make it your own.</p><Action href={site.github}>Explore the template <ArrowRight size={17}/></Action></div><div className="final-art" aria-hidden="true"><div className="art-grid"><span/><span/><span/><span/></div><span>WORK, IN HARMONY.</span></div></div></section></main><footer className="footer container"><div className="footer-main"><div><Brand/><p>A little more clarity for the work<br/>that brings us together.</p></div><div><strong>EXPLORE</strong>{navigation.map(item=><a key={item.href} href={item.href}>{item.label}</a>)}</div><div><strong>RESOURCES</strong><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub repository ↗</a><a href={site.pimolu} target="_blank" rel="noopener noreferrer">Pimolu UI ↗</a></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} Project Workspace. A demonstration template.</span><a href={site.pimolu} target="_blank" rel="noopener noreferrer">Built with <strong>Pimolu UI</strong> ↗</a></div></footer></>; }
-
-
-
-
+function TaskList() {
+  return (
+    <div className="task-list">
+      {tasks.map(([name, status, priority, date], i) => (
+        <div className="task-row" key={name}>
+          <span className="task-name">
+            {i === 3 ? (
+              <CheckCircle2 size={17} className="green" />
+            ) : (
+              <Circle size={17} />
+            )}
+            <span>{name}</span>
+          </span>
+          <Badge
+            size="sm"
+            appearance="soft"
+            variant={i === 3 ? "success" : i === 1 ? "warning" : "neutral"}
+          >
+            {status}
+          </Badge>
+          <span className="task-priority">
+            <Flag size={13} />
+            {priority}
+          </span>
+          <span className="task-date">{date}</span>
+          <Avatar name={people[i % 3]} size="xs" />
+        </div>
+      ))}
+    </div>
+  );
+}
+function Workspace() {
+  return (
+    <div className="workspace">
+      <aside className="workspace-side">
+        <div className="workspace-label">
+          <span className="tiny-mark">W</span>
+          <span>
+            Workspace<small>Team workspace</small>
+          </span>
+          <ChevronDown size={14} />
+        </div>
+        <div className="side-caption">WORKSPACE</div>
+        <div className="side-item active">
+          <LayoutDashboard size={15} /> Overview
+        </div>
+        <div className="side-item">
+          <ListTodo size={15} /> My tasks
+        </div>
+        <div className="side-item">
+          <FolderKanban size={15} /> Projects
+        </div>
+        <div className="side-item">
+          <Users size={15} /> Team
+        </div>
+        <div className="side-caption side-projects">
+          PROJECTS <Plus size={13} />
+        </div>
+        <div className="side-item">
+          <i className="dot sage" /> Product launch
+        </div>
+        <div className="side-item">
+          <i className="dot amber" /> Website refresh
+        </div>
+        <div className="side-item">
+          <i className="dot blue" /> Q3 roadmap
+        </div>
+        <div className="side-bottom">
+          <Avatar name="Alex Morgan" size="xs" /> Alex Morgan{" "}
+          <MoreHorizontal size={16} />
+        </div>
+      </aside>
+      <div className="workspace-main">
+        <div className="workspace-top">
+          <span>
+            Workspace <span className="slash">/</span> Overview
+          </span>
+          <span>
+            <span className="online-dot" /> All systems in flow
+          </span>
+        </div>
+        <div className="workspace-body">
+          <div className="preview-heading">
+            <div>
+              <div className="eyebrow tiny">MONDAY, MAY 20</div>
+              <h3>
+                Good morning, Alex <span>✳</span>
+              </h3>
+              <p>Here’s what’s happening across your projects.</p>
+            </div>
+            <span className="preview-add">
+              <Plus size={14} /> New project
+            </span>
+          </div>
+          <div className="stat-grid">
+            <div>
+              <span>
+                Active projects <FolderKanban size={15} />
+              </span>
+              <strong>12</strong>
+              <small>
+                <b>+2</b> from last month
+              </small>
+            </div>
+            <div>
+              <span>
+                Tasks completed <CheckCircle2 size={15} />
+              </span>
+              <strong>
+                84<span>%</span>
+              </strong>
+              <small>
+                <b>+12%</b> from last month
+              </small>
+            </div>
+            <div>
+              <span>
+                Upcoming deadlines <Clock3 size={15} />
+              </span>
+              <strong>05</strong>
+              <small>Across 3 projects</small>
+            </div>
+          </div>
+          <div className="preview-section">
+            <div className="preview-section-title">
+              <div>
+                <h4>Priority tasks</h4>
+                <p>A little progress every day.</p>
+              </div>
+              <MoreHorizontal size={18} />
+            </div>
+            <TaskList />
+          </div>
+          <div className="preview-project">
+            <div>
+              <span className="project-icon">
+                <FolderKanban size={16} />
+              </span>
+              <div>
+                <strong>Product launch</strong>
+                <small>12 of 18 tasks completed</small>
+              </div>
+            </div>
+            <div className="project-progress">
+              <span>67%</span>
+              <Progress
+                value={67}
+                size="sm"
+                aria-label="Product launch progress"
+              />
+            </div>
+            <Avatars />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+function SectionHeading({
+  tag,
+  title,
+  text,
+}: {
+  tag: string;
+  title: string;
+  text: string;
+}) {
+  return (
+    <div className="section-heading">
+      <div className="eyebrow">
+        <span className="eyebrow-dot" /> {tag}
+      </div>
+      <h2>{title}</h2>
+      <p>{text}</p>
+    </div>
+  );
+}
+function ProductViews() {
+  return (
+    <Tabs defaultValue="overview" className="views-tabs">
+      <TabsList aria-label="Product views" className="views-list">
+        {["Overview", "Tasks", "Projects", "Team"].map((x) => (
+          <TabsTrigger key={x} value={x.toLowerCase()}>
+            {x}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      <TabsContent value="overview">
+        <div className="view-panel">
+          <div>
+            <span className="view-icon">
+              <BarChart3 />
+            </span>
+            <h3>A clear picture, at a glance.</h3>
+            <p>
+              See priorities, progress, and the work that needs your attention
+              in one calm view.
+            </p>
+            <div className="mini-stats">
+              <div>
+                <strong>12</strong>
+                <span>active projects</span>
+              </div>
+              <div>
+                <strong>84%</strong>
+                <span>tasks completed</span>
+              </div>
+            </div>
+          </div>
+          <div className="view-chart">
+            <div className="chart-head">
+              <strong>Team activity</strong>
+              <span>
+                This week <ChevronDown size={13} />
+              </span>
+            </div>
+            <div className="bars">
+              {[35, 56, 44, 72, 58, 88, 70].map((n, i) => (
+                <div key={i}>
+                  <span style={{ height: `${n}%` }} />
+                  <small>{["M", "T", "W", "T", "F", "S", "S"][i]}</small>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </TabsContent>
+      <TabsContent value="tasks">
+        <div className="view-panel">
+          <div>
+            <span className="view-icon">
+              <ListTodo />
+            </span>
+            <h3>Make the next step obvious.</h3>
+            <p>
+              Give every task an owner, a priority, and a place in the bigger
+              picture.
+            </p>
+          </div>
+          <div className="view-task-box">
+            <h4>
+              My tasks{" "}
+              <Badge size="sm" appearance="soft">
+                4 tasks
+              </Badge>
+            </h4>
+            <TaskList />
+          </div>
+        </div>
+      </TabsContent>
+      <TabsContent value="projects">
+        <div className="view-panel">
+          <div>
+            <span className="view-icon">
+              <FolderKanban />
+            </span>
+            <h3>Keep the big picture in view.</h3>
+            <p>
+              Organize the details without losing sight of the outcomes your
+              team is working toward.
+            </p>
+          </div>
+          <div className="project-cards">
+            {[
+              ["Product launch", 67],
+              ["Website refresh", 42],
+              ["Q3 roadmap", 82],
+            ].map(([name, value]) => (
+              <div key={name}>
+                <div>
+                  <FolderKanban size={17} />
+                  <strong>{name}</strong>
+                  <MoreHorizontal size={17} />
+                </div>
+                <small>
+                  Project progress <b>{value}%</b>
+                </small>
+                <Progress
+                  value={Number(value)}
+                  size="sm"
+                  aria-label={`${name} progress`}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </TabsContent>
+      <TabsContent value="team">
+        <div className="view-panel">
+          <div>
+            <span className="view-icon">
+              <Users />
+            </span>
+            <h3>Good work happens together.</h3>
+            <p>
+              Bring people and projects together so everyone knows where work
+              stands.
+            </p>
+          </div>
+          <div className="team-list">
+            <h4>
+              Project team{" "}
+              <Badge size="sm" appearance="soft">
+                3 members
+              </Badge>
+            </h4>
+            {people.map((name, i) => (
+              <div key={name}>
+                <Avatar name={name} size="sm" />
+                <span>
+                  <strong>{name}</strong>
+                  <small>
+                    {["Project lead", "Product designer", "Developer"][i]}
+                  </small>
+                </span>
+                <Badge size="sm" variant="success" appearance="soft">
+                  Active
+                </Badge>
+              </div>
+            ))}
+          </div>
+        </div>
+      </TabsContent>
+    </Tabs>
+  );
+}
+const features = [
+  {
+    icon: FolderKanban,
+    title: "Project planning",
+    text: "Bring goals, milestones, and the details together in one organized space.",
+  },
+  {
+    icon: ListTodo,
+    title: "Task management",
+    text: "Give every task a clear owner, priority, and due date.",
+  },
+  {
+    icon: Users,
+    title: "Team collaboration",
+    text: "Keep conversations close to the work and everyone in the loop.",
+  },
+  {
+    icon: BarChart3,
+    title: "Progress tracking",
+    text: "See what’s moving, what’s done, and where your team needs a hand.",
+  },
+  {
+    icon: Workflow,
+    title: "Workflow automation",
+    text: "Make room for meaningful work by simplifying repetitive steps.",
+  },
+  {
+    icon: Sparkles,
+    title: "Reports & insights",
+    text: "Turn everyday activity into a clearer view of your team’s progress.",
+  },
+];
+function Features() {
+  return (
+    <section id="features" className="section container">
+      <div className="section-split">
+        <SectionHeading
+          tag="THE FEATURES"
+          title="Everything in its right place."
+          text="Less chasing updates. More momentum. Bring the important pieces of work together, without the noise."
+        />
+        <p className="side-note">
+          A more thoughtful way to move from the first idea to the final
+          checkmark. <ArrowDownRight size={20} />
+        </p>
+      </div>
+      <div className="feature-grid">
+        {features.map((f, i) => (
+          <Card key={f.title} className={`feature-card feature-${i}`}>
+            <div className="feature-icon">
+              <f.icon size={20} />
+            </div>
+            <h3>{f.title}</h3>
+            <p>{f.text}</p>
+            {i === 0 && (
+              <div className="feature-visual">
+                <div>
+                  <span className="dot sage" /> Product launch{" "}
+                  <Badge size="sm" variant="success" appearance="soft">
+                    On track
+                  </Badge>
+                </div>
+                <Progress
+                  value={72}
+                  size="sm"
+                  aria-label="Product launch progress"
+                />
+                <small>
+                  13 of 18 tasks complete <b>72%</b>
+                </small>
+              </div>
+            )}
+            {i === 3 && (
+              <div className="feature-visual compact">
+                <span>Weekly progress</span>
+                <strong>
+                  +24% <span>↗</span>
+                </strong>
+                <div className="sparkline">
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                </div>
+              </div>
+            )}
+          </Card>
+        ))}
+      </div>
+    </section>
+  );
+}
+function Pricing() {
+  const [yearly, setYearly] = useState(true);
+  return (
+    <section id="pricing" className="section container">
+      <div className="pricing-head">
+        <SectionHeading
+          tag="PRICING"
+          title="Room to grow, at your pace."
+          text="Simple example plans for individuals and teams. Find the shape that fits your work."
+        />
+        <div className="billing" aria-label="Billing period">
+          <SegmentedControl
+            size="sm"
+            value={yearly ? "yearly" : "monthly"}
+            onValueChange={(value) => setYearly(value === "yearly")}
+            options={[
+              { value: "monthly", label: "Monthly" },
+              {
+                value: "yearly",
+                label: (
+                  <span>
+                    Yearly <span>Save up to 25%</span>
+                  </span>
+                ),
+              },
+            ]}
+          />
+        </div>
+      </div>
+      <p className="demo-note">
+        Illustrative pricing only. This is a demo; no plans are available for
+        purchase.
+      </p>
+      <div className="pricing-grid">
+        {plans.map((plan) => (
+          <Card
+            className={`price-card ${plan.name === "Pro" ? "featured-price" : ""}`}
+            key={plan.name}
+          >
+            <div className="plan-title">
+              <h3>{plan.name}</h3>
+              {plan.name === "Pro" && (
+                <Badge variant="success" appearance="soft">
+                  Most popular
+                </Badge>
+              )}
+            </div>
+            <p>{plan.description}</p>
+            <div className="price">
+              <strong>${yearly ? plan.yearly : plan.monthly}</strong>
+              <span> / user / month</span>
+            </div>
+            <small>
+              {plan.monthly === 0
+                ? "Free forever"
+                : yearly
+                  ? `Billed yearly ($${plan.yearly * 12} per user)`
+                  : "Billed monthly"}
+            </small>
+            <a
+              className={`${buttonClasses(plan.name === "Pro" ? "primary" : "neutral", plan.name === "Pro" ? "solid" : "outline", "md")} plan-link`}
+              href="#faq"
+            >
+              Explore the demo <ArrowRight size={16} />
+            </a>
+            <div className="plan-divider" />
+            <strong className="included">WHAT’S INCLUDED</strong>
+            <ul>
+              {plan.features.map((feature) => (
+                <li key={feature}>
+                  <Check size={16} />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </Card>
+        ))}
+      </div>
+    </section>
+  );
+}
+export function Landing() {
+  return (
+    <>
+      <Header />
+      <main id="top">
+        <section className="hero container">
+          <div className="hero-copy">
+            <div className="hero-badge">
+              <span className="online-dot" /> A calmer way to get work done{" "}
+              <ArrowRight size={14} />
+            </div>
+            <h1>
+              Keep projects moving.
+              <br />
+              <em>Keep teams aligned.</em>
+            </h1>
+            <p>{site.description}</p>
+            <div className="hero-actions">
+              <Action href="#features">
+                Explore Features <ArrowRight size={17} />
+              </Action>
+              <Action href="#how-it-works" secondary>
+                See How It Works
+              </Action>
+            </div>
+            <div className="hero-foot">
+              <Avatars />
+              <span>Made for the way teams work together</span>
+              <span className="foot-line" />
+              <span>
+                Built with care <span className="green">✳</span>
+              </span>
+            </div>
+          </div>
+          <div className="hero-preview">
+            <div className="preview-topline">
+              <div>
+                <i />
+                <i />
+                <i />
+              </div>
+              <span>PROJECT WORKSPACE / OVERVIEW</span>
+              <span>✳</span>
+            </div>
+            <Workspace />
+          </div>
+          <div className="hero-caption">
+            <span>01 / A LITTLE MORE CLARITY</span>
+            <span>
+              YOUR WORK, IN ONE PLACE <ArrowDownRight size={15} />
+            </span>
+          </div>
+        </section>
+        <div className="principles">
+          <div className="container">
+            <span>GOOD WORK STARTS WITH CLARITY</span>
+            <div>
+              <CheckCircle2 /> Less busywork
+            </div>
+            <div>
+              <Columns3 /> More visibility
+            </div>
+            <div>
+              <Users /> Better together
+            </div>
+            <div>
+              <Zap /> Steady momentum
+            </div>
+          </div>
+        </div>
+        <section className="section container product-section">
+          <div className="section-split">
+            <SectionHeading
+              tag="A BETTER VIEW OF WORK"
+              title="One workspace. Every perspective."
+              text="From the big picture to the smallest detail, find the view that helps your team move forward."
+            />
+            <a className="text-link" href="#features">
+              Explore all features <ArrowRight size={16} />
+            </a>
+          </div>
+          <ProductViews />
+        </section>
+        <Features />
+        <section id="how-it-works" className="section how-section">
+          <div className="container">
+            <div className="section-split">
+              <SectionHeading
+                tag="HOW IT WORKS"
+                title="From plans to progress, naturally."
+                text="A simple starting point for the work that matters. Set things up once, then get moving together."
+              />
+              <span className="section-number">01 / 03</span>
+            </div>
+            <div className="steps">
+              {[
+                [
+                  "01",
+                  "Create your workspace",
+                  "Start with a shared space for your team, your goals, and the work ahead.",
+                ],
+                [
+                  "02",
+                  "Organize your projects",
+                  "Break the big picture into projects, tasks, priorities, and achievable steps.",
+                ],
+                [
+                  "03",
+                  "Make progress together",
+                  "Give work an owner, follow along, and celebrate the milestones as a team.",
+                ],
+              ].map(([n, title, text]) => (
+                <div className="step" key={n}>
+                  <span>{n}</span>
+                  <div className="step-line" />
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+        <section className="section container workflow-section">
+          <div className="workflow-copy">
+            <SectionHeading
+              tag="MADE FOR MOMENTUM"
+              title="A little structure goes a long way."
+              text="Take a launch from an idea to a shared plan. Assign the work, set priorities, and see progress unfold without another status meeting."
+            />
+            <a className="text-link" href="#pricing">
+              Find your starting point <ArrowRight size={16} />
+            </a>
+          </div>
+          <div className="workflow-card">
+            <div className="workflow-top">
+              <span>
+                <span className="project-icon">
+                  <FolderKanban size={18} />
+                </span>
+                <span>
+                  <strong>Product launch</strong>
+                  <small>Project workflow</small>
+                </span>
+              </span>
+              <Badge appearance="soft" variant="success" dot>
+                On track
+              </Badge>
+            </div>
+            <div className="workflow-line">
+              <span className="workflow-check">
+                <Check size={15} />
+              </span>
+              <div>
+                <strong>Project created</strong>
+                <small>Alex created the launch workspace</small>
+              </div>
+              <span>9:12 AM</span>
+            </div>
+            <div className="workflow-line">
+              <span className="workflow-check">
+                <Users size={15} />
+              </span>
+              <div>
+                <strong>Team assigned</strong>
+                <small>Three teammates are ready to go</small>
+              </div>
+              <Avatars />
+            </div>
+            <div className="workflow-line">
+              <span className="workflow-check">
+                <Flag size={15} />
+              </span>
+              <div>
+                <strong>Priorities set</strong>
+                <small>Next up: finalize homepage design</small>
+              </div>
+              <Badge size="sm" appearance="soft" variant="warning">
+                High
+              </Badge>
+            </div>
+            <div className="workflow-progress">
+              <div>
+                <strong>Launch progress</strong>
+                <span>67%</span>
+              </div>
+              <Progress value={67} aria-label="Launch progress" size="sm" />
+            </div>
+          </div>
+        </section>
+        <Pricing />
+        <section id="faq" className="section faq-section">
+          <div className="container faq-layout">
+            <SectionHeading
+              tag="GOOD TO KNOW"
+              title="Questions, answered."
+              text="A few things you might want to know about the Project Workspace concept."
+            />
+            <Accordion type="single" collapsible className="faq-list">
+              {faqs.map(([q, a], i) => (
+                <AccordionItem value={`faq-${i}`} key={q}>
+                  <AccordionTrigger>{q}</AccordionTrigger>
+                  <AccordionContent>{a}</AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </section>
+        <section className="container final-section">
+          <div className="final-cta">
+            <div>
+              <div className="eyebrow">A BETTER WAY TO WORK</div>
+              <h2>
+                Bring clarity to
+                <br />
+                every project.
+              </h2>
+              <p>
+                Make space for good work, together. Explore the template and
+                make it your own.
+              </p>
+              <Action href={site.github}>
+                Explore the template <ArrowRight size={17} />
+              </Action>
+            </div>
+            <div className="final-art" aria-hidden="true">
+              <div className="art-grid">
+                <span />
+                <span />
+                <span />
+                <span />
+              </div>
+              <span>WORK, IN HARMONY.</span>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer className="footer container">
+        <div className="footer-main">
+          <div>
+            <Brand />
+            <p>
+              A little more clarity for the work
+              <br />
+              that brings us together.
+            </p>
+          </div>
+          <div>
+            <strong>EXPLORE</strong>
+            {navigation.map((item) => (
+              <a key={item.href} href={item.href}>
+                {item.label}
+              </a>
+            ))}
+          </div>
+          <div>
+            <strong>RESOURCES</strong>
+            <a href={site.github} target="_blank" rel="noopener noreferrer">
+              GitHub repository ↗
+            </a>
+            <a href={site.pimolu} target="_blank" rel="noopener noreferrer">
+              Pimolu UI ↗
+            </a>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <span>
+            © {new Date().getFullYear()} Project Workspace. A demonstration
+            template.
+          </span>
+          <a href={site.pimolu} target="_blank" rel="noopener noreferrer">
+            Built with <strong>Pimolu UI</strong> ↗
+          </a>
+        </div>
+      </footer>
+    </>
+  );
+}

@@ -6,7 +6,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 const siteUrl = new URL("https://saas-landing.pimolu.com");
 const pageTitle = "Project Workspace | Work moves better together";
-const pageDescription = "A project management landing page template built with Pimolu UI. Explore a clearer way to plan, collaborate, and track work.";
+const pageDescription =
+  "A project management landing page template built with Pimolu UI. Explore a clearer way to plan, collaborate, and track work.";
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
@@ -19,7 +20,12 @@ export const metadata: Metadata = {
     url: "/",
     siteName: "Project Workspace",
     type: "website",
-    images: [{ url: "/preview.png", alt: "Preview of the Project Workspace landing page" }],
+    images: [
+      {
+        url: "/preview.png",
+        alt: "Preview of the Project Workspace landing page",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -29,9 +35,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   const saved = (await cookies()).get("workspace-theme")?.value;
   const theme = saved === "dark" ? "dark" : "light";
-  return <html lang="en" data-theme={theme}><body><ThemeProvider initialTheme={theme}>{children}</ThemeProvider></body></html>;
+  return (
+    <html lang="en" data-theme={theme}>
+      <body>
+        <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>
+      </body>
+    </html>
+  );
 }
-
